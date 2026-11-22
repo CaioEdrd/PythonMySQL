@@ -24,13 +24,13 @@ with connection:
         )
         
         #comando para limpar a tabela
-        # cursor.execute(
-        #         f"""
-        #         TRUNCATE TABLE customers
+        cursor.execute(
+                f"""
+                TRUNCATE TABLE customers
 
-        #     """
-        # )
-        # connection.commit()
+            """
+        )
+        connection.commit()
 
         #insert com placeholder para evitar sqlinjection
     with connection.cursor() as cursor:
@@ -76,6 +76,20 @@ with connection:
         #troca o comando execute por executemany
         cursor.executemany( sql, data )
         connection.commit()
+
+#Ler valores do Banco de Dados
+
+    with connection.cursor() as cursor:
+        #Passando vários valores em um insert
+        sql = f"""
+                SELECT * FROM customers
+                """
+        cursor.execute( sql )
+
+        dataSelect1 = cursor.fetchall()
+        for row in dataSelect1:
+            print(row)
+
     print(cursor)
 
 # #sem context manager
