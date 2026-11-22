@@ -23,22 +23,24 @@ with connection:
             """
         )
         #comando para limpar a tabela
-        cursor.execute(
-                f"""
-                TRUNCATE TABLE customers
+        # cursor.execute(
+        #         f"""
+        #         TRUNCATE TABLE customers
 
-            """
-        )
-        connection.commit()
+        #     """
+        # )
+        # connection.commit()
+        #insert com placeholder para evitar sqlinjection
     with connection.cursor() as cursor:
-        cursor.execute(
-                f"""
+        #comando sql com valores sendo placeholders
+        sql = f"""
                 INSERT INTO customers
                 (nome,idade)
                 VALUES
-                ("Caio", 23)
+                (%s, %s)
                 """
-        )
+        data = ("João",25)
+        cursor.execute( sql, data )
         connection.commit()
     print(cursor)
 
