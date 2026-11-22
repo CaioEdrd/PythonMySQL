@@ -80,9 +80,24 @@ with connection:
 #Ler valores do Banco de Dados
 
     with connection.cursor() as cursor:
-        #Passando vários valores em um insert
+        #select todas as colunas
         sql = f"""
                 SELECT * FROM customers
+                """
+        cursor.execute( sql )
+
+        #utilizar o fetchall/fetchmany/fetchone
+        dataSelect1 = cursor.fetchall()
+        #sempre que usar fetchall deve fazer o for na tupla gerada
+        for row in dataSelect1:
+            print(row)
+
+    with connection.cursor() as cursor:
+        #select dos dados com id maior que 2
+        sql = f"""
+                SELECT * 
+                FROM customers
+                WHERE id > 2
                 """
         cursor.execute( sql )
 
@@ -90,6 +105,36 @@ with connection:
         for row in dataSelect1:
             print(row)
 
+    with connection.cursor() as cursor:
+        nomeUsuario = input("Digite seu nome: ")
+        #select com base no nome, sempre que pedir um valor do usuário utilizar o placeholder
+        sql = f"""
+                SELECT idade
+                FROM customers
+                WHERE nome = %s 
+                """
+        cursor.execute(sql,(nomeUsuario,))
+        #fetchone pega a primeira ocorrência
+        dataSelect1 = cursor.fetchone()
+        print(f"Sua idade é: {dataSelect1}")
+
+
+    with connection.cursor() as cursor:
+        #ao pedir ID converte para int
+        menorID = input(int("Digite menor ID: "))
+        maioID = input(int("Digite maior ID: "))
+        #utilizando o between para pegar o nome entre os valores de ID passado
+        sql = f"""
+                SELECT nome
+                FROM customers
+                WHERE 
+                ID BETWEEN %s AND %s 
+                """
+        cursor.execute(sql,(menorID, maioID))
+
+        dataSelect1 = cursor.fetchall()
+        for row in dataSelect1:
+            print(row)        
     print(cursor)
 
 # #sem context manager
