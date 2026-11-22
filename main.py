@@ -22,9 +22,25 @@ with connection:
                 )
             """
         )
-        connection.commit()
+        #comando para limpar a tabela
+        cursor.execute(
+                f"""
+                TRUNCATE TABLE customers
 
-        print(cursor)
+            """
+        )
+        connection.commit()
+    with connection.cursor() as cursor:
+        cursor.execute(
+                f"""
+                INSERT INTO customers
+                (nome,idade)
+                VALUES
+                ("Caio", 23)
+                """
+        )
+        connection.commit()
+    print(cursor)
 
 # #sem context manager
 # cursor = connection.cursor()

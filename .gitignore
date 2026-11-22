@@ -3,7 +3,7 @@ __pycache__/
 *.py[codz]
 *$py.class
 
-mysql_container/
+mysql_container_backup/
 
 # C extensions
 *.so
