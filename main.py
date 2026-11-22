@@ -42,6 +42,21 @@ with connection:
         data = ("João",25)
         cursor.execute( sql, data )
         connection.commit()
+
+    with connection.cursor() as cursor:
+        #comando sql com valores sendo placeholders
+        sql = f"""
+                INSERT INTO customers
+                (nome,idade)
+                VALUES
+                (%(nomePessoa)s, %(idadePessoa)s)
+                """
+        data = {
+            "nomePessoa": "Allana",
+            "idadePessoa": 22
+        }
+        cursor.execute( sql, data )
+        connection.commit()
     print(cursor)
 
 # #sem context manager
