@@ -22,6 +22,7 @@ with connection:
                 )
             """
         )
+        
         #comando para limpar a tabela
         # cursor.execute(
         #         f"""
@@ -30,6 +31,7 @@ with connection:
         #     """
         # )
         # connection.commit()
+
         #insert com placeholder para evitar sqlinjection
     with connection.cursor() as cursor:
         #comando sql com valores sendo placeholders
@@ -44,7 +46,7 @@ with connection:
         connection.commit()
 
     with connection.cursor() as cursor:
-        #comando sql com valores sendo placeholders
+        #comando sql com valores sendo passado via dicionário
         sql = f"""
                 INSERT INTO customers
                 (nome,idade)
@@ -52,10 +54,27 @@ with connection:
                 (%(nomePessoa)s, %(idadePessoa)s)
                 """
         data = {
-            "nomePessoa": "Allana",
+            "nomePessoa": "Pedro",
             "idadePessoa": 22
         }
         cursor.execute( sql, data )
+        connection.commit()
+    with connection.cursor() as cursor:
+        #Passando vários valores em um insert
+        sql = f"""
+                INSERT INTO customers
+                (nome,idade)
+                VALUES
+                (%(nomePessoa)s, %(idadePessoa)s)
+                """
+       #os dados são dicionários dentro de uma tupla
+        data = (
+            {"nomePessoa": "Allana","idadePessoa": 22},
+            {"nomePessoa": "Pablo","idadePessoa": 27},
+            {"nomePessoa": "Joana","idadePessoa": 28}    
+        )
+        #troca o comando execute por executemany
+        cursor.executemany( sql, data )
         connection.commit()
     print(cursor)
 
