@@ -182,6 +182,27 @@ with connection:
     # for row in cursor.fetchall():
     #     print(row)
 
+#Utiliando diversas maneiras de detalhar consultas
+    with connection.cursor() as cursor:
+       resultFromSelect = cursor.execute('SELECT * FROM customers')
+            
+    data6 = cursor.fetchall()
+    for row in data6:
+        print(row)
+       
+    # cursor.execute(
+    #         'SELECT id FROM customers ORDER BY id DESC LIMIT 1'
+    #     )
+
+    # lastIdFromSelect = cursor.fetchone()
+
+    #maneiras de verificar quantidade de linhas de uma tabela
+    print('resultFromSelect', resultFromSelect)
+    print('lendata6', len(data6))
+    print('rowcount', cursor.rowcount)
+    # print('lastIdFromSelect', lastIdFromSelect['id'])
+
+
 # #sem context manager
 # cursor = connection.cursor()
 # cursor.close()
