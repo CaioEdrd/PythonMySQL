@@ -7,6 +7,7 @@ connection = pymysql.connect(
     user=os.environ['MYSQL_USER'],
     password=os.environ['MYSQL_PASSWORD'],
     database=os.environ['MYSQL_DATABASE'],
+    cursorclass=pymysql.cursors.DictCursor, #altera o cursor tradicional que é tupla para dicionário
 )
 #com context manager
 with connection:
@@ -102,41 +103,69 @@ with connection:
         cursor.execute( sql )
 
         dataSelect1 = cursor.fetchall()
-        for row in dataSelect1:
-            print(row)
+        # for row in dataSelect1:
+        #     print(row)
 
     with connection.cursor() as cursor:
-        nomeUsuario = input("Digite seu nome: ")
+        # nomeUsuario = input("Digite seu nome: ")
         #select com base no nome, sempre que pedir um valor do usuário utilizar o placeholder
         sql = f"""
                 SELECT idade
                 FROM customers
                 WHERE nome = %s 
                 """
-        cursor.execute(sql,(nomeUsuario,))
-        #fetchone pega a primeira ocorrência
-        dataSelect1 = cursor.fetchone()
-        print(f"Sua idade é: {dataSelect1}")
+        # cursor.execute(sql,(nomeUsuario,))
+        # #fetchone pega a primeira ocorrência
+        # dataSelect1 = cursor.fetchone()
+        # print(f"Sua idade é: {dataSelect1}")
 
 
     with connection.cursor() as cursor:
         #ao pedir ID converte para int
-        menorID = input(int("Digite menor ID: "))
-        maioID = input(int("Digite maior ID: "))
-        #utilizando o between para pegar o nome entre os valores de ID passado
+        # menorID = input(int("Digite menor ID: "))
+        # maioID = input(int("Digite maior ID: "))
+        # #utilizando o between para pegar o nome entre os valores de ID passado
         sql = f"""
                 SELECT nome
                 FROM customers
                 WHERE 
                 ID BETWEEN %s AND %s 
                 """
-        cursor.execute(sql,(menorID, maioID))
+        # cursor.execute(sql,(menorID, maioID))
 
-        dataSelect1 = cursor.fetchall()
-        for row in dataSelect1:
-            print(row)        
-    print(cursor)
+        # dataSelect1 = cursor.fetchall()
+        # for row in dataSelect1:
+        #     print(row)       
+    
+#Apagar valores
+    with connection.cursor() as cursor:
+        sql = f"""
+                DELETE FROM customers
+                WHERE ID = 4
+                """
+        cursor.execute( sql )
+        
+        cursor.execute('SELECT * FROM customers')
+    print('-'*10, 'DELETE ID 4', '-'*10)
+    for row in cursor.fetchall():
+        print(row)
+        connection.commit()
 
+#Atualizando valores
+    with connection.cursor() as cursor:
+        sql = f"""
+                UPDATE customers
+                SET
+                nome = %s, idade = %s
+                WHERE ID = 1
+                """
+        cursor.execute( sql, ("Caio",33) )
+        connection.commit()
+
+        cursor.execute('SELECT * FROM customers')
+    print('-'*10, 'UPDATE ID 1', '-'*10)
+    for row in cursor.fetchall():
+        print(row)
 # #sem context manager
 # cursor = connection.cursor()
 # cursor.close()
