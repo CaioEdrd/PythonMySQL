@@ -146,10 +146,10 @@ with connection:
         cursor.execute( sql )
         
         cursor.execute('SELECT * FROM customers')
-    print('-'*10, 'DELETE ID 4', '-'*10)
-    for row in cursor.fetchall():
-        print(row)
-        connection.commit()
+    # print('-'*10, 'DELETE ID 4', '-'*10)
+    # for row in cursor.fetchall():
+    #     print(row)
+    #     connection.commit()
 
 #Atualizando valores
     with connection.cursor() as cursor:
@@ -162,10 +162,26 @@ with connection:
         cursor.execute( sql, ("Caio",33) )
         connection.commit()
 
+    #     cursor.execute('SELECT * FROM customers')
+    # print('-'*10, 'UPDATE ID 1', '-'*10)
+    # for row in cursor.fetchall():
+    #     print(row)
+
+#utilizando fetchall sem colocar o valor em uma variável e utilizar o scroll do cursor
+    with connection.cursor() as cursor:
         cursor.execute('SELECT * FROM customers')
-    print('-'*10, 'UPDATE ID 1', '-'*10)
-    for row in cursor.fetchall():
-        print(row)
+    # print('-'*10, 'FOR 1', '-'*10)
+    # for row in cursor.fetchall():
+    #     print(row)
+    # print('-'*10, 'FOR 2', '-'*10)
+    # cursor.scroll(-2) #aqui faz o cursor "rolar" dentro dos parenteses posso colocar a quantidade de linhas para voltar ou avançar se modo relativo (padrão)
+    # for row in cursor.fetchall():
+    #     print(row)
+    # print('-'*10, 'FOR 3', '-'*10)
+    # cursor.scroll(0,'absolute') #o modo absoluto permite coocar a linha que quer que ele vá diretamente
+    # for row in cursor.fetchall():
+    #     print(row)
+
 # #sem context manager
 # cursor = connection.cursor()
 # cursor.close()
